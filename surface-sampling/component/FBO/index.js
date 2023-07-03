@@ -9,6 +9,7 @@ import SimulationMaterial from "@/component/SimulationMaterial";
 import vertex from "@/utils/vertex.glsl";
 import fragment from "@/utils/fragment.glsl";
 
+// Register the material into the r3f system
 extend({ SimulationMaterial: SimulationMaterial });
 
 function normalizeArray(array, chunkSize = 1000) {
@@ -41,8 +42,7 @@ let uTime = Math.PI / 2 / 0.35;
 /**
  *
  * @param {size} number of particle (int)
- * @param {obj} models path (array of path)
- * @param {obj} auto boolean (whether the animation should be auto)
+ * @param {src} models path (array of path)
  * @returns
  */
 export default function TransformVertices({ size = 150, src }) {
@@ -118,7 +118,7 @@ export default function TransformVertices({ size = 150, src }) {
       verticesB.push(tempPositionB.x, tempPositionB.y, tempPositionB.z, 1.0);
     }
 
-    // Reduce the range proportionally to -1 -> 1
+    // Reduce the range proportionally to -1 -> 1 (to keep the size relatively)
     const normalizeA = normalizeArray(verticesA);
     const normalizeB = normalizeArray(verticesB);
 
@@ -158,7 +158,7 @@ export default function TransformVertices({ size = 150, src }) {
     <>
       <mesh onClick={handleClick} position-x={-2}>
         <boxGeometry args={[1, 1, 1]} />
-        <meshNormalMaterial wireframe toneMapped={false} />
+        <meshNormalMaterial toneMapped={false} />
       </mesh>
       {createPortal(
         <mesh>
@@ -202,7 +202,7 @@ export default function TransformVertices({ size = 150, src }) {
           fragmentShader={fragment}
           vertexShader={vertex}
           uniforms={uniforms}
-          // toneMapped={false}
+          toneMapped={false}
         />
       </points>
     </>

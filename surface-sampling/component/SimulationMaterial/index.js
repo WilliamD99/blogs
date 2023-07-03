@@ -33,7 +33,7 @@ void main() {
 }
 `;
 
-const getRandomDataSphere = (width, height) => {
+const getRandomData = (width, height) => {
   // we need to create a vec4 since we're passing the positions to the fragment shader
   // data textures need to have 4 components, R, G, B, and A
   const length = width * height * 4;
@@ -54,25 +54,10 @@ const getRandomDataSphere = (width, height) => {
   return data;
 };
 
-const getRandomDataBox = (width, height) => {
-  var len = width * height * 4;
-  var data = new Float32Array(len);
-
-  for (let i = 0; i < data.length; i++) {
-    const stride = i * 4;
-    data[stride] = (Math.random() - 0.5) * 2.0;
-    data[stride + 1] = (Math.random() - 0.5) * 2.0;
-    data[stride + 2] = (Math.random() - 0.5) * 2.0;
-    data[stride + 3] = 1.0;
-  }
-
-  return data;
-};
-
 class SimulationMaterial extends THREE.ShaderMaterial {
   constructor(size, positionsA, positionsB) {
     const positionsTextureA = new THREE.DataTexture(
-      positionsA ? positionsA.array : getRandomDataBox(size, size),
+      positionsA ? positionsA.array : getRandomData(size, size),
       size,
       size,
       THREE.RGBAFormat,
@@ -81,7 +66,7 @@ class SimulationMaterial extends THREE.ShaderMaterial {
     positionsTextureA.needsUpdate = true;
 
     const positionsTextureB = new THREE.DataTexture(
-      positionsB ? positionsB.array : getRandomDataSphere(size, size),
+      positionsB ? positionsB.array : getRandomData(size, size),
       size,
       size,
       THREE.RGBAFormat,
